@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux' // highlight-line
-import { toggleImportanceOf } from '../reducers/noteReducer' // highlight-line
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleImportanceOf } from '../reducers/noteReducer'
 
 const Note = ({ note, handleClick }) => {
   return(
@@ -11,8 +11,15 @@ const Note = ({ note, handleClick }) => {
 }
 
 const Notes = () => {
-  const dispatch = useDispatch() // highlight-line
-  const notes = useSelector(state => state) // highlight-line
+  const dispatch = useDispatch()
+  const notes = useSelector(({ filter, notes }) => {
+    if ( filter === 'ALL' ) {
+      return notes
+    }
+    return filter  === 'IMPORTANT' 
+      ? notes.filter(note => note.important)
+      : notes.filter(note => !note.important)
+  })
 
   return(
     <ul>
